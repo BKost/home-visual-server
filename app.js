@@ -53,7 +53,7 @@ app.use(notFoundMiddleWare);
 app.use(errorHandlerMiddleware);
 
 const start = async () => {
-  const port = 3500;
+  const port = process.env.PORT || 3500;
 
   try {
     app.listen(port, console.log(`App is listening on port ${port}`));

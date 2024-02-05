@@ -12,7 +12,7 @@ const errorHandlerMiddleware = require("./middleware/errorHandlerMiddleware");
 
 const helmet = require("helmet");
 
-// app.use(helmet());
+app.use(helmet());
 app.use(express.json());
 
 app.post("/api/contact", async (req, res) => {

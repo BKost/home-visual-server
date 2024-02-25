@@ -32,7 +32,7 @@ const sendEmail = async (req, res) => {
     await mailerSend.email.send(emailParams);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ msg: "Vyskytla sa chyba !" });
+    return res.status(500).json({ msg: "Vyskytla sa chyba !", error });
   }
 
   res.status(200).json({ msg: "Form data sent" });

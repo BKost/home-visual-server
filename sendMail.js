@@ -14,7 +14,9 @@ const sendEmail = async (req, res) => {
     apiKey: process.env.MAILER_SEND_KEY,
   });
 
-  const sentFrom = new Sender("noreply@zive-dizajny.sk", "Bohdan Kostúrik");
+  const sentFrom = new Sender("email@zive-dizajny.sk", "zive-dizajny.sk");
+
+  // const replyTo = new Sender("zive.dizajny@gmail.com", "Bohdan Kostúrik");
 
   const recipients = [new Recipient(email, `${first_name} ${last_name}`)];
 
@@ -24,11 +26,64 @@ const sendEmail = async (req, res) => {
     .setReplyTo(sentFrom)
     .setSubject("3D Vizualizácia - interiér, exteriér")
     .setHtml(
-      "<strong>Dobrý deň, Ďakujeme za váš email a čoskoro sa vám ozveme.</strong>"
+      ` <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+</head>
+<body>
+    <div> <p><strong>Dobrý deň,</strong></p></div>
+       
+        <div><p>Čoskoro sa vám ozveme.</p></div>
+        
+    
+</body>
+</html>
+`
     )
-    .setText(`Dobrý deň, Ďakujeme za váš email a čoskoro sa vám ozveme. `);
+    .setText("Čoskoro sa vám ozveme.");
+
+  const businessRecipients = [
+    new Recipient("zive.dizajny@gmail.com", "Bohdan Kostúrik"),
+  ];
+
+  const sentFromCustomer = new Sender(
+    "email@zive-dizajny.sk",
+    `${first_name} ${last_name}`
+  );
+
+  const formData = new EmailParams()
+    .setFrom(sentFromCustomer)
+    .setTo(businessRecipients)
+    .setReplyTo(sentFrom)
+    .setSubject(`Správa - ${first_name} ${last_name}`)
+    .setHtml(
+      ` <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+      <div>
+      <h3>Meno</h3>
+      <strong><p>${first_name} ${last_name}</p></strong>
+      <h3>Správa</h3>
+          <p>${message}</p>
+      <h3>Kontakt</h3>
+          <p>Mobil: ${phone}</p>
+          <p>Email: ${email}</p>
+      </div>
+  </body>
+  </html>
+  `
+    )
+    .setText(`New message from ${first_name} ${last_name}`);
 
   try {
+    await mailerSend.email.send(formData);
+
     await mailerSend.email.send(emailParams);
   } catch (error) {
     console.log(error);

@@ -14,7 +14,7 @@ const sendEmail = async (req, res) => {
     apiKey: process.env.MAILER_SEND_KEY,
   });
 
-  const sentFrom = new Sender("kontakt@zive-dizajny.sk", "Bohdan Kostúrik");
+  const sentFrom = new Sender("noreply@zive-dizajny.sk", "Bohdan Kostúrik");
 
   const recipients = [new Recipient(email, `${first_name} ${last_name}`)];
 
